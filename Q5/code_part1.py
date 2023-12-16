@@ -48,8 +48,9 @@ def parse_file(file_path):
 if __name__ == '__main__':
     contents = parse_file('./input.txt')
     seeds = generate_seeds(contents[0])
+    print(seeds)
     remains = contents[1:]
     mappings = generate_maps(remains)
     locations = find_location(seeds, mappings)
     min_loc = find_min_locations(locations)
-    print(min_loc)
+    #print(min_loc)
