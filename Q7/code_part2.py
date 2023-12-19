@@ -7,7 +7,7 @@ def get_total_score(rank_hands_in_groups):
     return total_score
 
 def card_value_to_rank(card):
-    card_rank_map = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14}
+    card_rank_map = {'J': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'T': 10, 'Q': 11, 'K': 12, 'A': 13}
     return card_rank_map[card]
 
 def sort_hands_in_group(hands):
@@ -45,6 +45,8 @@ def classify_hands(hands_and_bids):
 
     for hand in hands_and_bids:
         hand_contents = {}
+        num_js = 0
+
         for char in hand[0]:
             if char in hand_contents:
                 hand_contents[char] += 1
@@ -54,26 +56,48 @@ def classify_hands(hands_and_bids):
         is_two_pair = sum(1 for occ in hand_contents.values() if occ == 2) == 2
         inserted_into_list = False
 
+        num_js = hand_contents['J'] if 'J' in hand_contents else 0
+
         if 5 in hand_contents.values() and not inserted_into_list:
             map_of_hands['five_of_a_kind'].append(hand)
             inserted_into_list = True
         elif 4 in hand_contents.values() and not inserted_into_list:
-            map_of_hands['four_of_a_kind'].append(hand)
+            if num_js >= 1:
+                map_of_hands['five_of_a_kind'].append(hand)
+            else:
+                map_of_hands['four_of_a_kind'].append(hand)
             inserted_into_list = True
         elif 3 in hand_contents.values() and 2 in hand_contents.values() and not inserted_into_list:
-            map_of_hands['full_house'].append(hand)
+            if num_js == 3 or num_js == 2:
+                map_of_hands['five_of_a_kind'].append(hand)
+            else:
+                map_of_hands['full_house'].append(hand)
             inserted_into_list = True
         elif 3 in hand_contents.values() and 2 not in hand_contents.values() and not inserted_into_list:
-            map_of_hands['three_of_kind'].append(hand)
+            if num_js == 3 or num_js == 1:
+                map_of_hands['four_of_a_kind'].append(hand)
+            else:
+                map_of_hands['three_of_kind'].append(hand)
             inserted_into_list = True
         elif is_two_pair and not inserted_into_list:
-            map_of_hands['two_pair'].append(hand)
+            if num_js == 2:
+                map_of_hands['four_of_a_kind'].append(hand)
+            elif num_js == 1:
+                map_of_hands['full_house'].append(hand)
+            else:
+                map_of_hands['two_pair'].append(hand)
             inserted_into_list = True
         elif 2 in hand_contents.values() and not is_two_pair and not inserted_into_list:
-            map_of_hands['one_pair'].append(hand)
+            if num_js >= 1:
+                map_of_hands['three_of_kind'].append(hand)
+            else:
+                map_of_hands['one_pair'].append(hand)
             inserted_into_list = True
         else:
-            map_of_hands['high_card'].append(hand)
+            if num_js == 1:
+                map_of_hands['one_pair'].append(hand)
+            else:
+                map_of_hands['high_card'].append(hand)
             inserted_into_list = True
 
     return map_of_hands
