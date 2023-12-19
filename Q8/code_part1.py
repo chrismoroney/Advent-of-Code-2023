@@ -10,8 +10,6 @@ def count_steps(instruction, map_of_nodes, num_steps, current):
                 current = map_of_nodes[current][1]
     return count_steps(instruction, map_of_nodes, num_steps, current)
 
-    
-
 def create_map_of_nodes(nodes):
     map_of_nodes = {}
     
