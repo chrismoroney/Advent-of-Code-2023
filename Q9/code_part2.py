@@ -8,7 +8,7 @@ def get_next_val(list):
     list_of_diffs = [int(next_val) - int(val) for val, next_val in zip(list, list[1:])]
     next_diff = get_next_val(list_of_diffs)
 
-    return int(list[-1]) + next_diff
+    return int(list[0]) - next_diff
 
 
 def parse(file_path):
@@ -19,7 +19,7 @@ def parse(file_path):
     return lines
 
 if __name__ == '__main__':
-    contents = parse('./input_sample.txt')
+    contents = parse('./input.txt')
     list_of_vals = []
     for list in contents:
         list_of_vals.append(get_next_val(list))
