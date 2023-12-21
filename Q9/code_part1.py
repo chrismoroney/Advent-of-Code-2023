@@ -1,3 +1,6 @@
+def sum_all_vals(list_of_vals):
+    return sum(val for val in list_of_vals)
+
 def get_next_val(list):
     if all(val == 0 for val in list):
         return 0
@@ -17,8 +20,9 @@ def parse(file_path):
 
 if __name__ == '__main__':
     contents = parse('./input.txt')
-    total = 0
+    list_of_vals = []
     for list in contents:
-        total += get_next_val(list)
+        list_of_vals.append(get_next_val(list))
+    total = sum_all_vals(list_of_vals)
     print(total)
     
