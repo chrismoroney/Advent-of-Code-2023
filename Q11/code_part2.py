@@ -13,12 +13,12 @@ def find_all_distances(empty_rows, empty_cols, galaxies):
             col_steps = 0
             for row_dist in range(min(x1, x2), max(x1, x2)):
                 if row_dist in empty_rows:
-                    row_steps += 2
+                    row_steps += 1000000
                 else:
                     row_steps += 1
             for col_dist in range(min(y1, y2), max(y1, y2)):
                 if col_dist in empty_cols:
-                    col_steps += 2
+                    col_steps += 1000000
                 else:
                     col_steps += 1
             distances.append(row_steps+col_steps)
